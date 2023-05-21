@@ -58,11 +58,13 @@ async function updateUsers(request, response) {
 async function deleteUsers(request, response) {
   try {
     const { id } = request.params;
+    //busca el id
     let respuesta = await User.findOne({
       where: {
         id,
       },
     });
+    //si encuentra la id entonces la eliminamos
     if (respuesta != null) {
       await User.destroy({
         where: {
@@ -81,6 +83,7 @@ async function deleteUsers(request, response) {
 async function getUser(request, response) {
   try {
     const { id } = request.params;
+    //busca usuario por id 
     let user = await User.findByPk(id);
     if (user != null) {
       return response.json(user);
@@ -94,13 +97,14 @@ async function getUser(request, response) {
 //promedio de edades de los usuarios registrados
 async function promedio(request, response) {
   try {
+    //se conecta a la base de datos y calcula el promedio de edades
     const prom = await sequelize.query(
       "SELECT AVG(EXTRACT(YEAR FROM AGE(NOW(),fecha_nacimiento))) AS promedio FROM usuarios"
     );
     if (prom != null) {
       var pro = prom[0];
       var result=parseFloat(pro[0].promedio)
-      return response.json(result.toFixed(1));
+      return response.json({"promedioEdad":result.toFixed(1)});
     } else {
       return response.json({ message: "No hay datos para sacar promedio" });
     }

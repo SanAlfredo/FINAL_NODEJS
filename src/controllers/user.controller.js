@@ -7,10 +7,10 @@ async function getUsers(request, response) {
   try {
     //buscar todos los resultados en la base de datos
     const users = await sequelize.query("select * from usuarios");
-    if (users!=null){
+    if (users != null) {
       //si encuentra resultados arroja en json
       return response.json(users[0]);
-    }else{
+    } else {
       return response.json({ message: "No hay registros" });
     }
   } catch (error) {
@@ -20,38 +20,82 @@ async function getUsers(request, response) {
 //insertar nuevo usuario
 async function insertUsers(request, response) {
   const { cedula, nombre, apellido1, apellido2, nacimiento } = request.body;
-  try {
-    const newUser = await User.create({
-      cedula_identidad: cedula,
-      nombre,
-      primer_apellido: apellido1,
-      segundo_apellido: apellido2,
-      fecha_nacimiento: nacimiento,
-    });
-    return response.json(newUser.id);
-  } catch (error) {
-    return response.status(500).json({ message: error.message });
+  var primero = "";
+  var segundo = "";
+  if (apellido1 == "" && apellido2 == "") {
+    return response
+      .status(404)
+      .json({ message: "al menos debe tener 1 apellido" });
+  } else {
+    const nom = nombre.toString().toLowerCase();
+
+    if (apellido1 == "" && apellido2 != "") {
+      primero = "no hay apellido";
+      segundo = apellido2.toString().toLowerCase();
+    }
+    if (apellido2 == "" && apellido1 != "") {
+      primero = apellido1.toString().toLowerCase();
+      segundo = "no hay apellido";
+    }
+    if (apellido1 != "" && apellido2 != "") {
+      primero = apellido1.toString().toLowerCase();
+      segundo = apellido2.toString().toLowerCase();
+    }
+    try {
+      const newUser = await User.create({
+        cedula_identidad: cedula,
+        nombre: nom,
+        primer_apellido: primero,
+        segundo_apellido: segundo,
+        fecha_nacimiento: nacimiento,
+      });
+      return response.json(newUser.id);
+    } catch (error) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 }
 //actualizar usuario
 async function updateUsers(request, response) {
   const { cedula, nombre, apellido1, apellido2, nacimiento } = request.body;
-  try {
-    const { id } = request.params;
-    let user = await User.findByPk(id);
-    if (user != null) {
-      user.cedula_identidad = cedula;
-      user.nombre = nombre;
-      user.primer_apellido = apellido1;
-      user.segundo_apellido = apellido2;
-      user.fecha_nacimiento = nacimiento;
-      await user.save();
-      return response.json(user);
-    } else {
-      return response.json({ message: "No existe en la base de datos" });
+  var primero = "";
+  var segundo = "";
+  if (apellido1 == "" && apellido2 == "") {
+    return response
+      .status(404)
+      .json({ message: "al menos debe tener 1 apellido" });
+  } else {
+    const nom = nombre.toString().toLowerCase();
+
+    if (apellido1 == "" && apellido2 != "") {
+      primero = "no hay apellido";
+      segundo = apellido2.toString().toLowerCase();
     }
-  } catch (error) {
-    return response.status(500).json({ message: error.message });
+    if (apellido2 == "" && apellido1 != "") {
+      primero = apellido1.toString().toLowerCase();
+      segundo = "no hay apellido";
+    }
+    if (apellido1 != "" && apellido2 != "") {
+      primero = apellido1.toString().toLowerCase();
+      segundo = apellido2.toString().toLowerCase();
+    }
+    try {
+      const { id } = request.params;
+      let user = await User.findByPk(id);
+      if (user != null) {
+        user.cedula_identidad = cedula;
+        user.nombre = nom;
+        user.primer_apellido = primero;
+        user.segundo_apellido = segundo;
+        user.fecha_nacimiento = nacimiento;
+        await user.save();
+        return response.json(user);
+      } else {
+        return response.json({ message: "No existe en la base de datos" });
+      }
+    } catch (error) {
+      return response.status(500).json({ message: error.message });
+    }
   }
 }
 //eliminar usuario
@@ -83,7 +127,7 @@ async function deleteUsers(request, response) {
 async function getUser(request, response) {
   try {
     const { id } = request.params;
-    //busca usuario por id 
+    //busca usuario por id
     let user = await User.findByPk(id);
     if (user != null) {
       return response.json(user);
@@ -103,8 +147,8 @@ async function promedio(request, response) {
     );
     if (prom != null) {
       var pro = prom[0];
-      var result=parseFloat(pro[0].promedio)
-      return response.json({"promedioEdad":result.toFixed(1)});
+      var result = parseFloat(pro[0].promedio);
+      return response.json({ promedioEdad: result.toFixed(1) });
     } else {
       return response.json({ message: "No hay datos para sacar promedio" });
     }

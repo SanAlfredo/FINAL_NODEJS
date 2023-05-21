@@ -45,3 +45,4 @@ GUIA DE RUTAS
 6. Ruta para actualizar datos de usuario: PUT localhost:3000/usuarios/id
 7. Ruta para eliminar a un usuario de la base de datos: DELETE localhost:3000/usuarios/id
 8. Ruta para ver el promedio de edades guardados en la base de datos: GET localhost:3000/usuarios/promedio/edad
+9. Ruta de deploy render.com: https://api-node-ejemplo.onrender.com

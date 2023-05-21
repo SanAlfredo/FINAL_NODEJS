@@ -16,12 +16,20 @@
 8. Configuracion necesaria dentro del package.json, dentro de Scripts:
 	"babel-node":"babel-node --presets=@babel/preset-env",
    	"dev":"nodemon --exec npm run babel-node src/index.js"
-9. Luego correr el programa con "npm run dev"
+9. Configuracion que debe tener .env
+	PGSQL_HOST=localhost
+	PGSQL_USER=postgres
+	PGSQL_PASSWORD=1234
+	PGSQL_DATABASE=PERSONA
+	PGSQL_PORT=5433
+10. Luego correr el programa con "npm run dev"
 
 ****************************************************************************************************************************
 GUIA DE RUTAS
 ****************************************************************************************************************************
 1. Ruta para crear la tabla en la base de datos: GET localhost:3000
+	NOTA: "crea una tabla llamada usuarios si no existe, pero la base de datos PERSONA o el nombre que se ponga en el archivo
+	.env debe existir en PostgreSQL, también se tiene un backup de la base de datos de prueba es backupPersona.backup"
 2. Ruta para ver el estado inicial: GET localhost:3000/estado
 3. Ruta que muestra todos los usuarios registrados en la base de datos: GET localhost:3000/usuarios
 4. Ruta que muestra sólo un usuario encontrado por su id: GET localhost:3000/usuarios/id

@@ -1,8 +1,9 @@
 import { Router, response } from "express";
 
-import { main } from "../controllers/main.controller";
+import { metodos as main} from "../controllers/main.controller";
 
 const router = Router();
-router.get("/", main);
+router.get("/", main.index);
+router.get("/estado", main.estado);
 
 export default router;

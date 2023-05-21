@@ -10,9 +10,12 @@ const app = express();
 //configuraciones
 app.set("port", 3000);
 //intermedios
+app.use(express.json());
 app.use(morgan("dev"));
-//rutas
+
+//ruta usuarios
 app.use("/usuarios", userRoute);
+//ruta localhost
 app.use("/", mainRoute);
 
 export default app;

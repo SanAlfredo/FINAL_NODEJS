@@ -3,6 +3,7 @@ import morgan from "morgan";
 
 //importar rutas
 import userRoute from "./routes/user.route";
+import mainRoute from "./routes/main.route";
 //definir variable inicial de aplicacion
 const app = express();
 
@@ -12,5 +13,6 @@ app.set("port", 3000);
 app.use(morgan("dev"));
 //rutas
 app.use("/usuarios", userRoute);
+app.use("/", mainRoute);
 
 export default app;
